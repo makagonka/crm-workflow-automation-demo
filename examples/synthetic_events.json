@@ -1,0 +1,26 @@
+[
+  {
+    "event_id": "demo-create-001",
+    "lead_id": "synthetic-lead-001",
+    "event_type": "lead.created",
+    "display_name": "Fictional Studio Ltd",
+    "source": "synthetic-webform",
+    "simulate_failures": 0
+  },
+  {
+    "event_id": "demo-replied-002",
+    "lead_id": "synthetic-lead-001",
+    "event_type": "lead.replied",
+    "display_name": "Fictional Studio Ltd",
+    "source": "synthetic-webform",
+    "simulate_failures": 0
+  },
+  {
+    "event_id": "demo-followup-003",
+    "lead_id": "synthetic-lead-001",
+    "event_type": "followup.requested",
+    "display_name": "Fictional Studio Ltd",
+    "source": "synthetic-webform",
+    "simulate_failures": 1
+  }
+]

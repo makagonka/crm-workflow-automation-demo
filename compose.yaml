@@ -1,0 +1,14 @@
+services:
+  crm-demo:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      DEMO_DB_PATH: /service/data/demo.sqlite3
+      DEMO_WEBHOOK_SECRET: ${DEMO_WEBHOOK_SECRET:-local-demo-webhook-change-me}
+      DEMO_ADMIN_TOKEN: ${DEMO_ADMIN_TOKEN:-local-demo-admin-change-me}
+    volumes:
+      - demo_data:/service/data
+    restart: unless-stopped
+volumes:
+  demo_data:

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CRM Workflow Automation · Portfolio Demo</title>
+<style>
+:root{color-scheme:dark;--bg:#080e17;--panel:#111e2c;--line:#2c4051;--text:#edf7ff;--muted:#a9b8c8;--mint:#72e4c8;--blue:#7dbaff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 40% -14%,#174754,transparent 53%),var(--bg);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text)}main{max-width:1120px;margin:auto;padding:36px 22px 80px}.eyebrow{font-size:12px;letter-spacing:2px;color:var(--mint);text-transform:uppercase;font-weight:700}.pill{display:inline-flex;border:1px solid #3e8275;background:#172b33;color:#c1f7eb;padding:4px 10px;border-radius:30px;font-size:12px}header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}h1{font-size:clamp(32px,4.6vw,58px);line-height:1.08;letter-spacing:-1.7px;max-width:850px;margin:22px 0 17px}h2{font-size:19px;letter-spacing:-.4px;margin:0 0 15px}.intro{font-size:17px;color:var(--muted);max-width:780px}.grid{display:grid;grid-template-columns:1.1fr 1fr;gap:17px;margin-top:30px}.card{padding:24px;border:1px solid var(--line);background:#132131;border-radius:19px}.section{margin-top:18px}.wide{grid-column:span 2}label{font-size:13px;font-weight:600;color:#c8d9e7;display:block;margin:12px 0 6px}input,textarea,select{color:var(--text);background:#0d1725;border:1px solid #435972;padding:11px 12px;border-radius:10px;width:100%;font:inherit}select{cursor:pointer}textarea{min-height:85px;resize:vertical}button{background:var(--mint);color:#0b2d2c;border:0;border-radius:10px;font:inherit;font-weight:700;padding:11px 15px;cursor:pointer}button.secondary{background:#22394a;color:#d4eff2;border:1px solid #426479}button:disabled{opacity:.55;cursor:wait}button:focus-visible{outline:3px solid white;outline-offset:2px}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}.stat{border:1px solid var(--line);background:#0c1927;border-radius:12px;padding:15px}.stat strong{font-size:27px;display:block;line-height:1.3;color:var(--mint)}.stat span{font-size:12px;color:var(--muted)}.hint,.info{color:var(--muted);font-size:13px}#feedback{padding:14px;border-radius:12px;background:#0c1927;min-height:54px;margin:13px 0;white-space:pre-wrap;border:1px solid var(--line)}.log{max-height:260px;overflow:auto;display:grid;gap:8px}.entry{display:flex;justify-content:space-between;gap:15px;padding:10px 12px;background:#0b1825;border-radius:9px;align-items:center;flex-wrap:wrap}.entry b{font-size:13px}.entry span{font-size:12px;color:var(--muted)}.badge{background:#1d3a41;color:#b5fae7;border-radius:50px;font-size:12px;padding:3px 10px}footer{font-size:12px;color:var(--muted);margin-top:36px}a{color:var(--mint)}@media(max-width:760px){main{padding:25px 14px 50px}.grid{grid-template-columns:1fr}.wide{grid-column:span 1}.stats{grid-template-columns:repeat(2,1fr)}.card{padding:18px}}
+</style>
+</head>
+<body><main>
+<header><span class="eyebrow">AI Automation / Systems Integration</span><span class="pill">Synthetic CRM · Offline demo</span></header>
+<h1>Reliable workflows.<br>Traceable decisions.</h1>
+<p class="intro">A hands-on example of webhook intake, event deduplication, reliable retries, a six-stage CRM pipeline and durable activity tracking. <strong>No real CRM, customers or external messages.</strong></p>
+<div class="grid">
+<section class="card"><h2>1 · Local credentials</h2><p class="hint">This interface runs only on localhost. The included keys are deliberately fictional and for demonstration only; change them for any shared environment.</p><label for="secret">Webhook signing secret</label><input type="password" id="secret" value="local-demo-webhook-change-me" autocomplete="off"><label for="admin">Admin token</label><input type="password" id="admin" value="local-demo-admin-change-me" autocomplete="off"><div class="row section"><button class="secondary" id="refresh">Refresh dashboard</button><span class="info">Credentials stay in this page's memory only.</span></div></section>
+<section class="card"><h2>2 · Send fictional event</h2><label for="kind">Event type</label><select id="kind"><option value="lead.created">lead.created — Create lead</option><option value="lead.replied">lead.replied — Customer replied</option><option value="followup.requested">followup.requested — Record follow-up</option></select><label for="lead">Synthetic lead ID</label><input id="lead" value="demo-lead-001"><label for="fail">Simulate transient failures</label><select id="fail"><option value="0">None</option><option value="1">Fail first attempt (then retry)</option><option value="4">Always fail → dead-letter</option></select><div class="row section"><button id="send">Send signed webhook</button><button class="secondary" id="process">Process queue</button></div></section>
+<section class="card wide"><h2>3 · Pipeline observability</h2><div class="stats"><div class="stat"><strong id="m-leads">—</strong><span>CRM leads</span></div><div class="stat"><strong id="m-processed">—</strong><span>Processed events</span></div><div class="stat"><strong id="m-pending">—</strong><span>Pending retry</span></div><div class="stat"><strong id="m-dead">—</strong><span>Dead-letter</span></div></div><div id="feedback" role="status" aria-live="polite">Use “Send signed webhook”, then “Process queue” to see changes.</div><div class="grid" style="margin-top:18px"><div><h2>CRM leads</h2><div id="leads" class="log"></div></div><div><h2>Recent events</h2><div id="events" class="log"></div></div></div></section>
+</div>
+<footer>Independent portfolio demonstration · FastAPI / SQLite / HMAC-SHA256 · <a href="/docs">Swagger API documentation</a> · Not for production exposure</footer>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const enc = new TextEncoder();
+const feedback = message => { $('feedback').textContent = message; };
+async function signed(body, secret){
+ const key = await crypto.subtle.importKey('raw',enc.encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']);
+ const bytes = await crypto.subtle.sign('HMAC', key, enc.encode(body));
+ return 'sha256=' + Array.from(new Uint8Array(bytes), b => b.toString(16).padStart(2,'0')).join('');
+}
+async function send(url, options){
+ const response=await fetch(url, options);
+ const result=await response.json();
+ if(!response.ok) throw new Error('HTTP '+response.status+': '+(result.detail||'Request failed'));
+ return result;
+}
+async function refresh(){
+ const headers={'X-Admin-Token':$('admin').value};
+ const [metrics,leads,events]=await Promise.all([
+  send('/ops/metrics',{headers}),send('/v1/leads',{headers}),send('/v1/events',{headers})
+ ]);
+ for(const [name,key] of [['leads','leads'],['processed','processed'],['pending','pending'],['dead','dead']])
+  $('m-'+name).textContent=metrics[key];
+ for(const [id,items] of [['leads',leads],['events',events.slice(-12).reverse()]]){
+  const target=$(id);target.replaceChildren();
+  if(!items.length){const p=document.createElement('p');p.className='hint';p.textContent='Nothing yet';target.append(p);continue;}
+  for(const item of items){
+   const block=document.createElement('div');block.className='entry';
+   const title=document.createElement('b');title.textContent=(id==='leads'?item.display_name:item.kind)+' · '+(id==='leads'?item.lead_id:item.event_id);
+   const status=document.createElement('span');status.className='badge';status.textContent=id==='leads'?item.stage_name:item.status+' · '+item.attempts+' attempt(s)';
+   block.append(title,status);target.append(block);
+  }
+ }
+}
+async function action(button,callback){button.disabled=true;try{await callback();await refresh()}catch(error){feedback(error.message)}finally{button.disabled=false}}
+$('send').addEventListener('click',()=>action($('send'),async()=>{
+ const body=JSON.stringify({event_id:'evt_'+crypto.randomUUID().replaceAll('-',''),lead_id:$('lead').value,
+  event_type:$('kind').value,display_name:'Fictional Studio',source:'synthetic-webform',
+  simulate_failures:Number($('fail').value)});
+ const signature=await signed(body,$('secret').value);
+ const result=await send('/webhooks/events',{method:'POST',headers:{'Content-Type':'application/json','X-Demo-Signature':signature},body});
+ feedback('Webhook '+result.event_id+' queued. Run the worker to process it.');
+}));
+$('process').addEventListener('click',()=>action($('process'),async()=>{
+ const result=await send('/ops/process',{method:'POST',headers:{'Content-Type':'application/json','X-Admin-Token':$('admin').value},body:JSON.stringify({limit:10})});
+ feedback('Attempted: '+result.attempted+' · Processed: '+result.processed+' · Retried: '+result.retried+' · Dead-letter: '+result.dead+'\nRetries are scheduled: wait a few seconds and process the queue again.');
+}));
+$('refresh').addEventListener('click',()=>action($('refresh'),async()=>{feedback('Dashboard refreshed.')}));
+refresh().catch(err=>feedback('Unable to read dashboard: '+err.message));
+</script></body></html>
